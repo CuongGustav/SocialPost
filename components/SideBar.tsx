@@ -28,7 +28,7 @@ const Sidebar = () => {
           />
         </Link>
       </div>  
-      <div className="flex flex-col gap-6 text-gray-500">
+      <div className="flex flex-col gap-6 text-gray-400">
         <Link href="/post">
           <GoHome className={`hover:text-black ${pathname === '/post' ? 'text-black' : ''}`} />
         </Link>
