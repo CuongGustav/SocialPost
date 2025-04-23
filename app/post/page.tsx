@@ -1,6 +1,29 @@
+'use client';
+
 import ListPost from './listPost';
+import {useState} from 'react';
+import ModalLogin from '../../components/auth/Login';
+import ModalSignUp from '../../components/auth/SignUp';
 
 const PortLayout = () => {
+    const [showModalLogin, setShowModalLogin] = useState(false);
+    const [showModalSignUp, setShowModalSignUp] = useState(false);
+
+
+    const openModalLogin = () => {
+        setShowModalLogin(true);
+    }
+    const closeModalLogin = () => {
+        setShowModalLogin(false);
+    }
+
+    const openModalSignUp = () => {
+        setShowModalSignUp(true);
+    }
+    const closeModalSignUp = () => {
+        setShowModalSignUp(false);
+    }
+
     return (
         <div>
             <div className="flex justify-center text-xl font-bold">
@@ -17,16 +40,23 @@ const PortLayout = () => {
                     <p className="text-center w-full text-gray-500">
                         Xem mọi người đang nói về điều gì và tham gia cuộc trò chuyện.
                     </p>
-                    <button className="mt-8 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer 
-                                    hover:border-black hover:text-black">
+                    <button
+                        className="mt-8 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer hover:border-black hover:text-black"
+                        onClick={()=> openModalLogin()}
+                    >
                         Đăng Nhập
                     </button>
-                    <button className="mt-4 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer
-                                    hover:border-black hover:text-black">
+                    <button 
+                        className="mt-4 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer hover:border-black hover:text-black"
+                        onClick={()=> openModalSignUp()}
+                    >
                         Đăng Ký
                     </button>
                 </div>
             </div>
+            {showModalLogin && <ModalLogin onClose={closeModalLogin} />}
+            {showModalSignUp && <ModalSignUp onClose={closeModalSignUp} />}
+
         </div>
     );
 };
