@@ -1,44 +1,51 @@
+"use client";
+
 import Image from 'next/image';
-const ListUser = () => {
-    return(
-        <div className='flex flex-col gap-2'>
-            <div className="flex flex-row items-center gap-2 border-b p-2 border-gray-300">
-                <div className="logo border border-gray-300 rounded-full h-[50px] w-[50px] cursor-pointer">
-                    <Image
-                        src="/2e98d8b6-a483-405a-88d9-67171f71b379.jpg"
-                        alt="Logo"
-                        width={50}
-                        height={50}
-                        className="cursor-pointer rounded-full"
-                    />
-                </div>
-                <div className="font-bold max-w-[128px] overflow-hidden">aaaaaa</div>
-            </div>
-            <div className="flex flex-row items-center gap-2 border-b p-2 border-gray-300">
-                <div className="logo border border-gray-300 rounded-full h-[50px] w-[50px] cursor-pointer">
-                    <Image
-                        src="/2e98d8b6-a483-405a-88d9-67171f71b379.jpg"
-                        alt="Logo"
-                        width={50}
-                        height={50}
-                        className="cursor-pointer rounded-full"
-                    />
-                </div>
-                <div className="font-bold max-w-[128px] overflow-hidden">aaaaaa</div>
-            </div>
-            <div className="flex flex-row items-center gap-2 border-b p-2 border-gray-300">
-                <div className="logo border border-gray-300 rounded-full h-[50px] w-[50px] cursor-pointer">
-                    <Image
-                        src="/2e98d8b6-a483-405a-88d9-67171f71b379.jpg"
-                        alt="Logo"
-                        width={50}
-                        height={50}
-                        className="cursor-pointer rounded-full"
-                    />
-                </div>
-                <div className="font-bold max-w-[128px] overflow-hidden">aaaaaa</div>
-            </div>
-        </div>
-    )
+import { UserSimpleResponse } from "../../types/user";
+
+interface ListUserProps {
+    users: UserSimpleResponse[];
 }
-export default ListUser
+
+const ListUser = ({ users }: ListUserProps) => {
+
+    const getAvatarUrl = (path: string | null): string => {
+        if (!path) return "/avatar_user.png";
+        if (path.startsWith("http")) return path;
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+        return `${API_BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+    };
+
+    if (users.length === 0) {
+        return <div className="text-center">Không tìm thấy người dùng nào</div>;
+    }
+
+    return (
+        <div className="flex flex-col gap-2">
+            {users.map((user) => (
+                <div
+                    key={user.id}
+                    className="flex flex-row items-center gap-2 border-b p-2 border-gray-300"
+                >
+                    <div className="logo border border-gray-300 rounded-full h-[50px] w-[50px] ">
+                        <Image
+                            src={getAvatarUrl(user.avatar_url)}
+                            alt="Ảnh đại diện"
+                            width={50}
+                            height={50}
+                            className="rounded-full"
+                        />
+                    </div>
+                    <div>
+                        <a className="font-bold overflow-hidden cursor-pointer ">{user.username}</a>
+                        <div className="font-bold overflow-hidden text-gray-400">
+                        {user.fullname || ""}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+export default ListUser;
