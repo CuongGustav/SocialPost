@@ -8,7 +8,6 @@ import { BiMessageDetail } from "react-icons/bi";
 import { MdNotificationsNone } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineLogout } from "react-icons/md";
-
 import { usePathname } from 'next/navigation'
 
 const Sidebar = () => {
@@ -35,15 +34,21 @@ const Sidebar = () => {
                 <Link href="/search">
                     <FiSearch className={`hover:text-black ${pathname === '/search' ? 'text-black' : ''}`} />
                 </Link>
-                <Link href="/message">
+                {isLoggedIn && (
+                    <Link href="/message">
                     <BiMessageDetail className={`hover:text-black ${pathname === '/message' ? 'text-black' : ''}`} />
                 </Link>
-                <Link href="/notification">
-                    <MdNotificationsNone className={`hover:text-black ${pathname === '/notification' ? 'text-black' : ''}`} />
-                </Link>
-                <Link href="/profile">
-                    <FaRegUser className={`hover:text-black ${pathname === '/profile' ? 'text-black' : ''}`} />
-                </Link>
+                )}
+                {isLoggedIn && (
+                    <Link href="/notification">
+                        <MdNotificationsNone className={`hover:text-black ${pathname === '/notification' ? 'text-black' : ''}`} />
+                    </Link>
+                )}
+                {isLoggedIn && (
+                    <Link href="/profile">
+                        <FaRegUser className={`hover:text-black ${pathname === '/profile' ? 'text-black' : ''}`} />
+                    </Link>
+                )}
             </div>
             <div>
                 {isLoggedIn && (

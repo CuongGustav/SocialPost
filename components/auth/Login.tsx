@@ -9,9 +9,23 @@ interface ModalLoginProps {
 }
 
 const ModalLogin: FC<ModalLoginProps> = ({ onClose }) => {
+    const handleBackdropClick = () => {
+        onClose();
+    };
+    
+    const stopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+    };
+
     return (
-        <div className="fixed inset-0 z-50 bg-gray-500/75 flex justify-center items-center h-full ">
-            <div className="bg-white p-6 rounded-lg w-auto md:w-[400px]">
+        <div 
+            className="fixed inset-0 z-50 bg-gray-500/75 flex justify-center items-center h-full" 
+            onClick={handleBackdropClick}
+        >
+            <div 
+                className="bg-white p-6 rounded-lg w-auto md:w-[400px]"
+                onClick={stopPropagation}    
+            >
                 <div className='flex justify-center relative'>
                     <Image
                         src="/logo.png"

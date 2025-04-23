@@ -6,6 +6,8 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { RiShareForwardLine } from "react-icons/ri";
 import { PostWithUserResponse } from "../../types/post";
+import ModalLogin from "../../components/auth/Login";
+import { useState } from "react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
 
@@ -14,6 +16,15 @@ interface ListPostProps {
 }
 
 const ListPost = ({ posts }: ListPostProps) => {
+
+    const isLoggedIn = false; 
+    const [showLoginModal, setShowLoginModal] = useState(false)
+
+    const handleClickWhenNotLogin = () =>{
+        if (!isLoggedIn) {
+            setShowLoginModal(true)
+        }
+    }
 
     const getStaticUrl = (path: string | null): string => {
         if (!path) return "/avatar_user.png";
@@ -106,16 +117,23 @@ const ListPost = ({ posts }: ListPostProps) => {
                         <div className="mt-2">{renderImages(post.images)}</div>
                         <div className="flex flex-row gap-12 my-2 text-2xl">
                             <div className="flex flex-row justify-center items-center gap-1">
-                                <FaRegHeart className="cursor-pointer" />
+                                <FaRegHeart 
+                                    className="cursor-pointer" 
+                                    onClick={handleClickWhenNotLogin}
+                                />
                                 <p className="text-base">{post.like_count}</p>
                             </div>
                             <div className="flex flex-row justify-center items-center gap-1">
-                                <FaRegComment className="cursor-pointer" />
+                                <FaRegComment 
+                                    className="cursor-pointer" 
+                                    onClick={handleClickWhenNotLogin}
+                                />
                                 <p className="text-base">{post.comment_count}</p>
                             </div>
                             <div className="flex flex-row justify-center items-center gap-1">
                                 <RiShareForwardLine
-                                className="cursor-pointer"
+                                    className="cursor-pointer"
+                                    onClick={handleClickWhenNotLogin}
                                 />
                                 <p className="text-base">{post.share_count}</p>
                             </div>
@@ -123,6 +141,7 @@ const ListPost = ({ posts }: ListPostProps) => {
                     </div>
                 </div>
             ))}
+            {showLoginModal && <ModalLogin onClose={() => setShowLoginModal(false)} />}
         </div>
     );
 };
