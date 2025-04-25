@@ -1,5 +1,4 @@
-// app/post/layout.tsx
-import Sidebar from "../../components/admin.SideBar";
+import Sidebar from "../../components/admin/SideBar"
 
 export default function AdminLayout({
   children,

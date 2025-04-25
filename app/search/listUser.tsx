@@ -37,9 +37,9 @@ const ListUser = ({ users }: ListUserProps) => {
                         />
                     </div>
                     <div>
-                        <a className="font-bold overflow-hidden cursor-pointer ">{user.username}</a>
-                        <div className="font-bold overflow-hidden text-gray-400">
-                        {user.fullname || ""}
+                        <div className="font-bold overflow-hidden cursor-pointer hover:underline">{user.username}</div>
+                        <div className="font-base overflow-hidden text-gray-400">
+                            {user.fullname || ""}
                         </div>
                     </div>
                 </div>
