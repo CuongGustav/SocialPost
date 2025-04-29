@@ -5,7 +5,7 @@ import {useState} from 'react';
 import ModalLogin from '../../components/auth/Login';
 import ModalSignUp from '../../components/auth/SignUp';
 
-const PortLayout = () => {
+const PortPage = () => {
     const [showModalLogin, setShowModalLogin] = useState(false);
     const [showModalSignUp, setShowModalSignUp] = useState(false);
 
@@ -33,7 +33,7 @@ const PortLayout = () => {
                 <div className="flex flex-col w-[70%] rounded-[25px] border border-gray-300 pb-8 ">
                     <ListPost />
                 </div>
-                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300">
+                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300 sticky top-12">
                     <div className="text-center w-full text-lg font-bold">
                         Đăng nhập hoặc đăng ký SocialPost
                     </div>
@@ -61,4 +61,4 @@ const PortLayout = () => {
     );
 };
 
-export default PortLayout;
+export default PortPage;
