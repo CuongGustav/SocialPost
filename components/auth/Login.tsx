@@ -1,8 +1,9 @@
 'use client';
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 import Image from 'next/image';
 import { MdClose } from "react-icons/md";
+import { createPortal } from 'react-dom';
 
 interface ModalLoginProps {
   onClose: () => void;
@@ -17,9 +18,16 @@ const ModalLogin: FC<ModalLoginProps> = ({ onClose }) => {
         e.stopPropagation();
     };
 
-    return (
+    // Kiểm tra xem có phải đang chạy ở client không
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Nội dung modal
+    const modalContent = (
         <div 
-            className="fixed inset-0 z-50 bg-gray-500/75 flex justify-center items-center h-full" 
+            className="fixed inset-0 z-[1000] bg-black/50 flex justify-center items-center h-screen w-screen"
             onClick={handleBackdropClick}
         >
             <div 
@@ -50,7 +58,7 @@ const ModalLogin: FC<ModalLoginProps> = ({ onClose }) => {
                     />
                     <input
                         placeholder='Nhập mật khẩu ...'
-                        className='mt-2 px-4 w-full h-[50px] rounded-xl border-gray-400 text-gray-400 border-2  hover:border-black hover:text-black'
+                        className='mt-2 px-4 w-full h-[50px] rounded-xl border-gray-400 text-gray-400 border-2 hover:border-black hover:text-black'
                     />
                     <button className='mt-4 w-full h-[50px] rounded-xl border-gray-400 text-black border-2 cursor-pointer hover:border-black hover:bg-gray-200'>
                         Đăng Nhập
@@ -59,6 +67,10 @@ const ModalLogin: FC<ModalLoginProps> = ({ onClose }) => {
             </div>
         </div>
     );
+
+    // Chỉ render portal khi component đã mounted (ở client)
+    if (!mounted) return null;
+    return createPortal(modalContent, document.body);
 };
 
 export default ModalLogin;

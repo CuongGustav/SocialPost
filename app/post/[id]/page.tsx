@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../../../styles/post.module.css";
@@ -11,6 +11,8 @@ import { RiShareForwardLine } from "react-icons/ri";
 import { PostWithUserResponse} from "../../../types/post";
 import { CommentWithUserResponse } from "../../../types/comment"
 import ModalLogin from "../../../components/auth/Login";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -37,7 +39,8 @@ const getCommentsByPostId = async (postId: string): Promise<CommentWithUserRespo
 };
 
 const PostDetail = () => {
-  const { id } = useParams(); // Lấy post_id từ dynamic route [id]
+  const { id } = useParams(); 
+  const router = useRouter();
   const [post, setPost] = useState<PostWithUserResponse | null>(null);
   const [comments, setComments] = useState<CommentWithUserResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -154,109 +157,120 @@ const PostDetail = () => {
   }
 
   return (
-    <div className="flex flex-col w-6/10 mx-auto mt-4">
-      {/* Thông tin bài đăng */}
-      <div className="flex flex-row border-b border-gray-300 pb-4">
-        <div className="min-w-[50px]">
-          <Image
-            src={getStaticUrl(post.avatar_url)}
-            alt="Ảnh đại diện"
-            width={50}
-            height={50}
-            className="rounded-full border border-gray-300"
-          />
-        </div>
-        <div className="ml-2 w-full">
-          <div className="flex flex-row gap-2">
-            <div className="font-bold">{post.username}</div>
-            <div>
-              {new Date(post.created_at).toLocaleString("vi-VN", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-              })}
+    <div>
+      {/* Nút Quay lại */}
+      <div className='sticky top-0 pl-74 py-2 bg-white'>
+                <button
+                    className=" flex items-center justify-center rounded-full cursor-pointer "
+                    onClick={() => router.back()}
+                >
+                    <IoArrowBackCircleOutline className="w-6 h-6 text-lg text-gray-400 hover:text-black" />
+                </button>
             </div>
+      <div className="flex flex-col w-6/10 mx-auto">
+        {/* List Post */}
+        <div className="flex flex-row border-b border-gray-300 pb-4 mt-4">
+          <div className="min-w-[50px]">
+            <Image
+              src={getStaticUrl(post.avatar_url)}
+              alt="Ảnh đại diện"
+              width={50}
+              height={50}
+              className="rounded-full border border-gray-300"
+            />
           </div>
-          <div className="whitespace-pre-line">{post.content}</div>
-          <div className="mt-2">{renderImages(post.images)}</div>
-          <div className="flex flex-row gap-12 my-2 text-2xl">
-            <div className="flex flex-row justify-center items-center gap-1">
-              <FaRegHeart
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClickWhenNotLogin();
-                }}
-              />
-              <p className="text-base">{post.like_count}</p>
+          <div className="ml-2 w-full">
+            <div className="flex flex-row gap-2">
+              <div className="font-bold">{post.username}</div>
+              <div>
+                {new Date(post.created_at).toLocaleString("vi-VN", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </div>
             </div>
-            <div className="flex flex-row justify-center items-center gap-1">
-              <FaRegComment
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClickWhenNotLogin();
-                }}
-              />
-              <p className="text-base">{post.comment_count}</p>
-            </div>
-            <div className="flex flex-row justify-center items-center gap-1">
-              <RiShareForwardLine
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleClickWhenNotLogin();
-                }}
-              />
-              <p className="text-base">{post.share_count}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Danh sách bình luận */}
-      <div className="mt-4">
-        <h2 className="text-lg font-bold mb-2">Bình luận</h2>
-        {comments.length === 0 ? (
-          <div className="text-center">Chưa có bình luận nào</div>
-        ) : (
-          comments.map((comment) => (
-            <div key={comment.id} className="flex flex-row border-b border-gray-300 py-2">
-              <div className="min-w-[40px]">
-                <Image
-                  src={getStaticUrl(comment.avatar_url)}
-                  alt="Ảnh đại diện bình luận"
-                  width={40}
-                  height={40}
-                  className="rounded-full border border-gray-300"
+            <div className="whitespace-pre-line">{post.content}</div>
+            <div className="mt-2">{renderImages(post.images)}</div>
+            <div className="flex flex-row gap-12 my-2 text-2xl">
+              <div className="flex flex-row justify-center items-center gap-1">
+                <FaRegHeart
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickWhenNotLogin();
+                  }}
                 />
+                <p className="text-base">{post.like_count}</p>
               </div>
-              <div className="ml-2 w-full">
-                <div className="flex flex-row gap-2">
-                  <div className="font-bold">{comment.username}</div>
-                  <div>
-                    {new Date(comment.created_at).toLocaleString("vi-VN", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                    })}
-                  </div>
-                </div>
-                <div className="whitespace-pre-line">{comment.content}</div>
-                {renderCommentImages(comment.images)}
+              <div className="flex flex-row justify-center items-center gap-1">
+                <FaRegComment
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickWhenNotLogin();
+                  }}
+                />
+                <p className="text-base">{post.comment_count}</p>
+              </div>
+              <div className="flex flex-row justify-center items-center gap-1">
+                <RiShareForwardLine
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickWhenNotLogin();
+                  }}
+                />
+                <p className="text-base">{post.share_count}</p>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          </div>
+        </div>
 
-      {showLoginModal && <ModalLogin onClose={() => setShowLoginModal(false)} />}
+        {/* Danh sách bình luận */}
+        <div className="mt-4">
+          <h2 className="text-lg font-bold mb-2">Bình luận</h2>
+          {comments.length === 0 ? (
+            <div className="text-center">Chưa có bình luận nào</div>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment.id} className="flex flex-row border-b border-gray-300 py-2">
+                <div className="min-w-[40px]">
+                  <Image
+                    src={getStaticUrl(comment.avatar_url)}
+                    alt="Ảnh đại diện bình luận"
+                    width={40}
+                    height={40}
+                    className="rounded-full border border-gray-300"
+                  />
+                </div>
+                <div className="ml-2 w-full">
+                  <div className="flex flex-row gap-2">
+                    <div className="font-bold">{comment.username}</div>
+                    <div>
+                      {new Date(comment.created_at).toLocaleString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                      })}
+                    </div>
+                  </div>
+                  <div className="whitespace-pre-line">{comment.content}</div>
+                  {renderCommentImages(comment.images)}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {showLoginModal && <ModalLogin onClose={() => setShowLoginModal(false)} />}
+      </div>
     </div>
   );
 };

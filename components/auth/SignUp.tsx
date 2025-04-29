@@ -19,7 +19,7 @@ const ModalSignUp: FC<ModalSignUpProps> = ({ onClose }) => {
 
     return (
         <div 
-            className="fixed inset-0 z-50 bg-gray-500/75 flex justify-center items-center h-full"
+            className="fixed inset-0 z-100 bg-gray-500/75 flex justify-center items-center h-full"
             onClick={handleBackdropClick}
         >
             <div 

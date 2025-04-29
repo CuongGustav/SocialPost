@@ -2,12 +2,16 @@
 
 import Image from 'next/image';
 import { UserSimpleResponse } from "../../types/user";
+import { useRouter } from "next/navigation";
+
 
 interface ListUserProps {
     users: UserSimpleResponse[];
 }
 
 const ListUser = ({ users }: ListUserProps) => {
+
+    const router = useRouter();
 
     const getAvatarUrl = (path: string | null): string => {
         if (!path) return "/avatar_user.png";
@@ -37,7 +41,16 @@ const ListUser = ({ users }: ListUserProps) => {
                         />
                     </div>
                     <div>
-                        <div className="font-bold overflow-hidden cursor-pointer hover:underline">{user.username}</div>
+                        <button
+                                className="font-bold max-w-[128px] overflow-hidden hover:underline text-left cursor-pointer"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    console.log("Navigating to profile with user_id:", user.id);
+                                    router.push(`/profile/${user.id}`);
+                                }}
+                            >
+                                {user.username}
+                        </button>
                         <div className="font-base overflow-hidden text-gray-400">
                             {user.fullname || ""}
                         </div>

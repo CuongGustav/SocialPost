@@ -26,14 +26,14 @@ const PortPage = () => {
 
     return (
         <div>
-            <div className="flex justify-center text-xl font-bold">
+            <div className="flex justify-center text-xl font-bold sticky top-0 py-2 bg-white shadow-b-md shadow-black/20">
                 Trang chủ
             </div>
-            <div className="flex w-[70%] mx-auto pt-2 gap-4">
-                <div className="flex flex-col w-[70%] rounded-[25px] border border-gray-300 pb-8 ">
+            <div className="flex w-[70%] mx-auto gap-4">
+                <div className="flex flex-col w-[70%] rounded-[25px] border border-gray-300">
                     <ListPost />
                 </div>
-                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300 sticky top-12">
+                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300 sticky top-10">
                     <div className="text-center w-full text-lg font-bold">
                         Đăng nhập hoặc đăng ký SocialPost
                     </div>

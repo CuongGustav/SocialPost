@@ -141,9 +141,15 @@ const ListPostSharePage = () => {
                     </div>
                     <div className="ml-2 mt-2 w-full">
                         <div className="flex flex-row gap-2">
-                            <div className="font-bold max-w-[128px] overflow-hidden hover:underline">
+                            <button
+                                className="font-bold max-w-[128px] overflow-hidden hover:underline text-left cursor-pointer"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    router.push(`/profile/${post.user_id}`);
+                                }}
+                            >
                                 {post.username}
-                            </div>
+                            </button>
                             <div>
                                 {new Date(post.created_at).toLocaleString("vi-VN", {
                                     day: "2-digit",

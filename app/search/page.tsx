@@ -9,6 +9,8 @@ import ListPost from "./listPost";
 import ListUser from "./listUser";
 import { PostWithUserResponse } from "../../types/post";
 import { UserSimpleResponse } from "../../types/user";
+import ModalLogin from "../../components/auth/Login";
+import ModalSignUp from "@/components/auth/SignUp";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
 
@@ -19,6 +21,22 @@ const SearchLayout = () => {
     const [users, setUsers] = useState<UserSimpleResponse[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showModalLogin, setShowModalLogin] = useState(false);
+    const [showModalSignUp, setShowModalSignUp] = useState(false);
+    
+    const openModalLogin = () => {
+        setShowModalLogin(true);
+    }
+    const closeModalLogin = () => {
+        setShowModalLogin(false);
+    }
+
+    const openModalSignUp = () => {
+        setShowModalSignUp(true);
+    }
+    const closeModalSignUp = () => {
+        setShowModalSignUp(false);
+    }
 
     const searchPosts = useCallback(async (query: string) => {
         try {
@@ -86,7 +104,9 @@ const SearchLayout = () => {
 
     return (
         <div>
-            <div className="flex justify-center text-xl font-bold">Tìm kiếm</div>
+            <div className="flex justify-center text-xl font-bold sticky top-0 py-2 bg-white shadow-b-md shadow-black/20">
+                Tìm kiếm
+            </div>
             <div className="flex w-[70%] mx-auto pt-2 gap-4">
                 <div className="flex flex-col w-[70%] rounded-[25px] border border-gray-300 p-4">
                     <div className="flex flex-row items-center border border-gray-300 h-[45px] rounded-2xl">
@@ -131,7 +151,7 @@ const SearchLayout = () => {
                         {activeTab === "user" && <ListUser users={users} />}
                     </div>
                 </div>
-                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300">
+                <div className="flex flex-col w-[30%] h-[300px] rounded-[25px] px-6 py-4 border border-gray-300 sticky top-10">
                     <div className="text-center w-full text-lg font-bold">
                         Đăng nhập hoặc đăng ký SocialPost
                     </div>
@@ -140,16 +160,21 @@ const SearchLayout = () => {
                     </p>
                     <button
                         className="mt-8 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer hover:border-black hover:text-black"
+                        onClick={()=> openModalLogin()}
                     >
                         Đăng Nhập
                     </button>
-                    <button
+                    <button 
                         className="mt-4 w-full h-[50px] rounded-3xl border-gray-400 text-gray-400 border-2 cursor-pointer hover:border-black hover:text-black"
+                        onClick={()=> openModalSignUp()}
                     >
                         Đăng Ký
                     </button>
                 </div>
             </div>
+            {showModalLogin && <ModalLogin onClose={closeModalLogin}/>}
+            {showModalSignUp && <ModalSignUp onClose={closeModalSignUp}/>}
+
         </div>
     );
 };
