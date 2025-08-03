@@ -18,6 +18,7 @@ import Loading from "@/components/ui/shared/Loader"
 import { Link } from "react-router-dom"
 
 import { createUserAccount } from "@/lib/appwrite/api"
+import { toast } from "sonner"
 
 const SignupForm = () => {
     const isLoading = false 
@@ -36,7 +37,10 @@ const SignupForm = () => {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof SignupValidation>) {
         const newUser =  await createUserAccount(values)
-        console.log(newUser)
+        if (!newUser) {
+            return toast("Sign up failed. Please try again.")
+        }
+        // const session = await signInAccount()
     }
 
     return (
